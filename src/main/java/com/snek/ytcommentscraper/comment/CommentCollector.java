@@ -16,6 +16,8 @@ public class CommentCollector {
     public CommentCollector(String url) throws InterruptedException {
         driver.get(url);
         Thread.sleep(1000);
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         driver.executeScript("document.querySelector(\"#merch-shelf\").scrollIntoView();");
         Thread.sleep(4000);
         scrollToLoad();
@@ -25,7 +27,7 @@ public class CommentCollector {
                              + "document.querySelector(\"#ytd-player\").remove();");
     }
 
-    public ArrayList<Comment> getNextNComments(int commentCount){
+    public ArrayList<Comment> getNextNComments(int commentCount, boolean ignoreErrors){
         ArrayList<Comment> comments = new ArrayList<>();
         for (int i = 0; i <= commentCount; i++) {
             try {
@@ -35,7 +37,15 @@ public class CommentCollector {
                     break;
                 }else {
                     scrollToLoad();
-                    comments.add(getComment());
+                    try {
+                        comments.add(getComment());
+                    }catch (Exception exception){
+                        exception.printStackTrace();
+                        if (!ignoreErrors){
+                            System.out.println("file not written!!");
+                        }
+                        break;
+                    }
                 }
             }
         }
@@ -76,15 +86,6 @@ public class CommentCollector {
 
             Thread.sleep(1000);
         }
-
-        /*//verify loading completion (i don't know why this hasn't ever actually caught any issues)
-        while (true){
-            var rc1 = driver.executeScript("document.querySelector(\"#loaded-replies\")");
-            Thread.sleep(3000);
-            var rc2 = driver.executeScript("document.querySelector(\"#loaded-replies\")");
-            if (rc1 == rc2){break;}
-            System.out.println("uwu");
-        }*/
 
         //read more on all the replies
         driver.executeScript
