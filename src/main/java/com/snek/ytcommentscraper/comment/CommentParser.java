@@ -18,8 +18,6 @@ public class CommentParser {
         com.setProfilePicLink(cb.selectFirst("#author-thumbnail > a")
                 .getElementById("img").attr("src"));
 
-        com.setHearted(cb.getElementById("creator-heart").childrenSize() > 0);
-
         if (hasReplies){
             com.setReplies(getParsedReplies(comDoc.getElementById("loaded-replies")));
         }
@@ -40,7 +38,7 @@ public class CommentParser {
 
         boolean isHearted = mainBody.getElementById("creator-heart").childrenSize() > 0;
 
-        return new Comment(userName, userLink, content, commentLink, likes, timeAgo);
+        return new Comment(userName, userLink, content, commentLink, likes, timeAgo, isHearted);
     }
 
     private ArrayList<Comment> getParsedReplies(Element replySection){

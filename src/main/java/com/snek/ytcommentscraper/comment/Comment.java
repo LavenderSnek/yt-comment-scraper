@@ -15,17 +15,14 @@ public class Comment {
 
     public Comment
             (String username, String userLink, String contentHtml,
-             String commentLink, String likes, String timeAgo) {
+             String commentLink, String likes, String timeAgo, boolean isHearted) {
         this.username = username;
         this.userLink = userLink;
         this.contentHtml = contentHtml;
         this.commentLink = commentLink;
         this.likes = likes;
         this.timeAgo = timeAgo;
-    }
-
-    public void setHearted(boolean hearted) {
-        isHearted = hearted;
+        this.isHearted = isHearted;
     }
 
     public void setProfilePicLink(String profilePicLink) {
